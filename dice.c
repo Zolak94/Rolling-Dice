@@ -10,14 +10,21 @@ int main() {
   x5=0;
   x6=0;
   z=0;
+  int choice;
   time_t t;
-  printf("Press 1 for roll \n");
-  printf("Press 0 for exit \n");
-  scanf("%d", &k);
-  if ( k == 0 ) {
-    return 0;
-  }
-  else
+  printf("-------Menu-------\n");
+  printf("1) Choose dice\n");
+  printf("2) Roll dice, update new table \n");
+  printf("3) Roll dice, update old table\n");
+  printf("4) Exit\n");
+  scanf("%d", &choice);
+  if (choice==4)
+   {
+      return 0;
+    }
+  if (choice==2)
+   {
+      printf("You chose program 2!\n");
   printf("How many dice? ");
   scanf("%d", &n);
   if ( n > 10 ) {
@@ -45,15 +52,15 @@ int main() {
         x5++;
       }
       if ( z == 6 ) {
-        x6++;
+        x6++;}
       }
     }
+    printf ("1:%d\n",x1);
+    printf ("2:%d\n",x2);
+    printf ("3:%d\n",x3);
+    printf ("4:%d\n",x4);
+    printf ("5:%d\n",x5);
+    printf ("6:%d\n",x6);
   }
-  printf ("1:%d\n",x1);
-  printf ("2:%d\n",x2);
-  printf ("3:%d\n",x3);
-  printf ("4:%d\n",x4);
-  printf ("5:%d\n",x5);
-  printf ("6:%d\n",x6);
   return main();
 }
