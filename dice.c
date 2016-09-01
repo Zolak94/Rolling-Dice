@@ -13,14 +13,20 @@ int main() {
   scanf("%d", &m);
   srand((unsigned) time(&t));
   for ( i = 0; i < m; i++ ) {
-    printf("%d: {", i + 1 );
+    printf("%d: ", i + 1 );
+    if ( n > 1 ) {
+      printf("{");
+    }
     for ( j = 0; j < n; j++ ) {
       printf("%d", rand()%6+1);
       if ( j < ( n - 1 )) {
         printf(",");
       }
     }
-    printf("}\n");
+    if ( n > 1 ) {
+      printf("}");
+    }
+    printf("\n");
   }
   return 0;
 }
