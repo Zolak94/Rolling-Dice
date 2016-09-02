@@ -87,6 +87,7 @@ void rolling_dice (int n, int m, int z,int *x,int dice_sides) {
 
 int main() {
   int dice_sides;
+  dice_sides = 6;
   int i,j,n,m,k,z;
   z=0;
   char option;
