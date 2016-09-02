@@ -84,6 +84,7 @@ void rolling_dice (int n, int m, int z,int *x,int dice_sides) {
     printf ("%d: %d\n", ( i + 1 ), x[i] );
     }
 }
+
 int main() {
   int dice_sides;
   int i,j,n,m,k,z;
@@ -148,9 +149,6 @@ int main() {
     break;
   case 3:
     printf("\nYOU SELECTED OPTION 3\n");
-    for ( i = 0; i < dice_sides; i++ ){
-      x[i]=0;
-    }
     rolling_dice(n,m,z,x,dice_sides);
     break;
   case 4:
