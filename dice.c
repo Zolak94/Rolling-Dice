@@ -90,7 +90,7 @@ int main() {
   dice_sides = 6;
   int i,j,n,m,k,z;
   z=0;
-  char option;
+  char answer;
   int x[5];
   int choice;
   int dice_choice;
@@ -147,10 +147,24 @@ int main() {
     }
     printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(n,m,z,x,dice_sides);
+    printf("Do you want to roll dice again ? [Y/N]");
+    while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
+      for ( i = 0; i < dice_sides; i++ ){
+        x[i]=0;
+      }
+      printf("\nYou are rolling %d sided dice\n", dice_sides);
+      rolling_dice(n,m,z,x,dice_sides);
+      printf("Do you want to roll dice again? [Y/N]");
+    }
     break;
   case 3:
     printf("\nYOU SELECTED OPTION 3\n");
     rolling_dice(n,m,z,x,dice_sides);
+    printf("\nDo you want to roll dice again ? [Y/N]\n");
+    while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
+      rolling_dice(n,m,z,x,dice_sides);
+      printf("\nDo you want to roll dice again? [Y/N]\n");
+    }
     break;
   case 4:
     printf("\nYOU SELECTED OPTION 4\n\n");
