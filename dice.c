@@ -153,7 +153,7 @@ int main() {
     rolling_dice(n,m,z,x,dice_sides);
     break;
   case 4:
-    printf("\nYOU SELECTED OPTION 4\n");
+    printf("\nYOU SELECTED OPTION 4\n\n");
     return 0;
       }
   }
