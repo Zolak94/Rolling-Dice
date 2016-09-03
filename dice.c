@@ -43,8 +43,9 @@ int choosing_dice(int *dice_sides) {
     return *dice_sides;
 }
 
-void rolling_dice(int number_of_dice, int dice_roll, int random_number, int *x,
-  int dice_sides) {
+void rolling_dice(int *x, int dice_sides) {
+  int number_of_dice, dice_roll;
+  int random_number = 0;
   time_t t;
   int i, j;
   printf("\nHow many dice? ");
@@ -67,9 +68,8 @@ void rolling_dice(int number_of_dice, int dice_roll, int random_number, int *x,
 }
 
 int main() {
-  int i, j, number_of_dice, dice_roll;
+  int i, j;
   int dice_sides = 6;
-  int random_number = 0;
   char answer;
   int x[5];
   int choice;
@@ -91,23 +91,23 @@ int main() {
       x[i] = 0;
     }
     printf("\nYou are rolling %d sided dice\n", dice_sides);
-    rolling_dice(number_of_dice, dice_roll, random_number, x, dice_sides);
+    rolling_dice(x, dice_sides);
     printf("Do you want to roll dice again ? [Y/N]");
     while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
       for (i = 0; i < dice_sides; i++) {
         x[i] = 0;
       }
       printf("\nYou are rolling %d sided dice\n", dice_sides);
-      rolling_dice(number_of_dice, dice_roll, random_number, x, dice_sides);
+      rolling_dice(x, dice_sides);
       printf("Do you want to roll dice again? [Y/N]");
     }
     break;
   case 3:
     printf("\nYOU SELECTED OPTION 3\n");
-    rolling_dice(number_of_dice, dice_roll, random_number, x, dice_sides);
+    rolling_dice(x, dice_sides);
     printf("\nDo you want to roll dice again ? [Y/N]\n");
     while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
-      rolling_dice(number_of_dice, dice_roll, random_number, x, dice_sides);
+      rolling_dice(x, dice_sides);
       printf("\nDo you want to roll dice again? [Y/N]\n");
     }
     break;
