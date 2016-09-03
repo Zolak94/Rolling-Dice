@@ -67,6 +67,14 @@ void rolling_dice(int *x, int dice_sides) {
   }
 }
 
+int reseting_dice(int *dice_sides, int *x) {
+  int i;
+  for (i = 0; i < *dice_sides; i++) {
+    x[i] = 0;
+  }
+  return *dice_sides;
+}
+
 int main() {
   int i, j;
   int dice_sides = 6;
@@ -87,16 +95,12 @@ int main() {
     break;
   case 2:
     printf("\nYOU SELECTED OPTION 2\n");
-    for ( i = 0; i < dice_sides; i++ ) {
-      x[i] = 0;
-    }
+    reseting_dice(&dice_sides,x);
     printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(x, dice_sides);
     printf("Do you want to roll dice again ? [Y/N]");
     while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
-      for (i = 0; i < dice_sides; i++) {
-        x[i] = 0;
-      }
+      reseting_dice(&dice_sides,x);
       printf("\nYou are rolling %d sided dice\n", dice_sides);
       rolling_dice(x, dice_sides);
       printf("Do you want to roll dice again? [Y/N]");
