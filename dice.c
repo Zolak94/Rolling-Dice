@@ -5,7 +5,7 @@
 
 int choosing_dice(int *dice_sides) {
   int dice_choice;
-  printf("\nYOU SELECTED OPTION 1\n");
+  printf("\nYOU SELECTED OPTION 1\n\n");
   printf("-------Dice-------\n");
   printf("1) 4-sides\n");
   printf("2) 6-sides \n");
@@ -121,7 +121,7 @@ void error_no_table(int *x, int dice_sides) {
 }
 
 int main() {
-  int i, j, choice;
+  int choice;
   int dice_sides = 6;
   int x[5];
   time_t t;
