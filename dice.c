@@ -97,11 +97,19 @@ int menu(int *choice) {
   return *choice;
   }
 
+void rolling_again (int *x, int dice_sides) {
+  char answer;
+  printf("\nDo you want to roll dice again ? [Y/N]\n");
+  while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
+  rolling_dice(x, dice_sides);
+  printf("\nDo you want to roll dice again? [Y/N]\n");
+  }
+}
+
 int main() {
   int i, j, choice;
   int dice_sides = 6;
   int x[5];
-  char answer;
   time_t t;
   while (choice != '4') {
   menu(&choice);
@@ -114,22 +122,13 @@ int main() {
     reseting_dice(&dice_sides,x);
     printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(x, dice_sides);
-    printf("Do you want to roll dice again ? [Y/N]");
-    while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
-      reseting_dice(&dice_sides,x);
-      printf("\nYou are rolling %d sided dice\n", dice_sides);
-      rolling_dice(x, dice_sides);
-      printf("Do you want to roll dice again? [Y/N]");
-    }
+    reseting_dice(&dice_sides,x);
+    rolling_again(x, dice_sides);
     break;
   case 3:
     printf("\nYOU SELECTED OPTION 3\n");
     rolling_dice(x, dice_sides);
-    printf("\nDo you want to roll dice again ? [Y/N]\n");
-    while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
-      rolling_dice(x, dice_sides);
-      printf("\nDo you want to roll dice again? [Y/N]\n");
-    }
+    rolling_again(x, dice_sides);
     break;
   case 4:
     printf("\nYOU SELECTED OPTION 4\n\n");
