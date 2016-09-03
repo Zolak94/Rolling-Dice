@@ -14,6 +14,10 @@ int choosing_dice(int *dice_sides) {
   printf("5) 12-sides\n");
   printf("6) 20-sides\n");
   scanf("%d", &dice_choice);
+  if (dice_choice > 6 || dice_choice < 1) {
+    printf("\nInvalid choice!\n\n");
+  }
+  else {
   switch (dice_choice) {
     case 1:
       printf("\nYOU SELECTED 4-SIDED DICE\n");
@@ -39,9 +43,17 @@ int choosing_dice(int *dice_sides) {
       printf("\nYOU SELECTED 20-SIDED DICE\n");
       *dice_sides = 20;
       break;
-    }
+      }
     return *dice_sides;
-}
+    }
+  }
+
+void printing_table(int dice_sides, int *x) {
+  int i;
+  for ( i = 0; i < dice_sides; i++ ) {
+  printf("%d: %d\n", (i + 1), x[i]);
+    }
+  }
 
 void rolling_dice(int *x, int dice_sides) {
   int number_of_dice, dice_roll;
@@ -53,6 +65,7 @@ void rolling_dice(int *x, int dice_sides) {
   if ( number_of_dice > 10 ) {
     printf("\nYou entered invalid number of dice!\n\n");
   }
+  else {
   printf("How many rolls? ");
   scanf("%d", &dice_roll);
   srand((unsigned) time(&t));
@@ -60,10 +73,9 @@ void rolling_dice(int *x, int dice_sides) {
     for ( j = 0; j < dice_roll; j++ ) {
       random_number = rand()%dice_sides+1;
       x[random_number-1]++;
+      }
     }
-  }
-  for ( i = 0; i < dice_sides; i++ ) {
-  printf("%d: %d\n", (i + 1), x[i]);
+  printing_table(dice_sides, x);
   }
 }
 
@@ -75,20 +87,24 @@ int reseting_dice(int *dice_sides, int *x) {
   return *dice_sides;
 }
 
-int main() {
-  int i, j;
-  int dice_sides = 6;
-  char answer;
-  int x[5];
-  int choice;
-  time_t t;
-  while (choice != '4') {
+int menu(int *choice) {
   printf("-------Menu-------\n");
   printf("1) Choose dice\n");
   printf("2) Roll dice, update new table \n");
   printf("3) Roll dice, update old table\n");
   printf("4) Exit\n");
-  scanf("%d", &choice);
+  scanf("%d", &*choice);
+  return *choice;
+  }
+
+int main() {
+  int i, j, choice;
+  int dice_sides = 6;
+  int x[5];
+  char answer;
+  time_t t;
+  while (choice != '4') {
+  menu(&choice);
   switch (choice) {
   case 1:
     choosing_dice(&dice_sides);
