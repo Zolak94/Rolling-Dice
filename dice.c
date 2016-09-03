@@ -20,27 +20,27 @@ int choosing_dice(int *dice_sides) {
   else {
   switch (dice_choice) {
     case 1:
-      printf("\nYOU SELECTED 4-SIDED DICE\n");
+      printf("\nYOU SELECTED 4-SIDED DICE\n\n");
       *dice_sides = 4;
       break;
     case 2:
-      printf("\nYOU SELECTED 6-SIDED DICE\n");
+      printf("\nYOU SELECTED 6-SIDED DICE\n\n");
       *dice_sides = 6;
       break;
     case 3:
-      printf("\nYOU SELECTED 8-SIDED DICE\n");
+      printf("\nYOU SELECTED 8-SIDED DICE\n\n");
       *dice_sides = 8;
       break;
     case 4:
-      printf("\nYOU SELECTED 10-SIDED DICE\n");
+      printf("\nYOU SELECTED 10-SIDED DICE\n\n");
       *dice_sides = 10;
       break;
     case 5:
-      printf("\nYOU SELECTED 12-SIDED DICE\n");
+      printf("\nYOU SELECTED 12-SIDED DICE\n\n");
       *dice_sides = 12;
       break;
     case 6:
-      printf("\nYOU SELECTED 20-SIDED DICE\n");
+      printf("\nYOU SELECTED 20-SIDED DICE\n\n");
       *dice_sides = 20;
       break;
       }
@@ -106,6 +106,20 @@ void rolling_again (int *x, int dice_sides) {
   }
 }
 
+void error_no_table(int *x, int dice_sides) {
+  int i;
+  for(i = 0; i < dice_sides; i++) {
+    if (x[i] > 20) {
+      printf("\nError: No table to update!\n");
+      reseting_dice(&dice_sides, x);
+    }
+    if (x[i] < 0) {
+      printf("\nError: Current table is empty!\nUpdating new table!\n");
+      reseting_dice(&dice_sides, x);
+    }
+  }
+}
+
 int main() {
   int i, j, choice;
   int dice_sides = 6;
@@ -127,6 +141,8 @@ int main() {
     break;
   case 3:
     printf("\nYOU SELECTED OPTION 3\n");
+    error_no_table(x, dice_sides);
+    printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(x, dice_sides);
     rolling_again(x, dice_sides);
     break;
