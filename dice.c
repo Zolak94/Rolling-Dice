@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 int choosing_dice(int *dice_sides) {
   int dice_choice;
@@ -124,9 +125,13 @@ int main() {
   int choice;
   int dice_sides = 6;
   int x[5];
+  char unwantedCharacters[40];
+  unwantedCharacters[0] = 0;
   time_t t;
   while (choice != '4') {
   menu(&choice);
+  fgets(unwantedCharacters, 40, stdin);
+  if (isalpha(unwantedCharacters[0]) == 0)  {
   switch (choice) {
   case 1:
     choosing_dice(&dice_sides);
@@ -149,6 +154,13 @@ int main() {
   case 4:
     printf("\nYOU SELECTED OPTION 4\n\n");
     return 0;
-    }
+  default:
+    printf("\nWRONG INPUT\n\n");
+    return 0;
+     }
+   }
+  else {
+    printf("\nERROR WRONG INPUT!\n\n");
   }
+ }
 }
