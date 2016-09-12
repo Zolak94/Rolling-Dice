@@ -6,8 +6,7 @@
 
 struct memory {
   int dice[20];
-};
-struct memory history[5];
+} history[5];
 
 int choosing_dice(int *dice_sides) {
   int dice_choice;
@@ -55,9 +54,18 @@ int choosing_dice(int *dice_sides) {
 
 void printing_table(int dice_sides, int *x) {
   int i;
+  FILE *fp;
+  fp = fopen("results.dat", "a");
+      if (fp == NULL) {
+         printf("I couldn't open results.dat for writing.\n");
+         exit(0);
+      }
   for ( i = 0; i < dice_sides; i++ ) {
   printf("%d: %d\n", (i + 1), x[i]);
+  fprintf(fp, "%d\n",x[i]);
     }
+  printf("\n");
+  fclose(fp);
   }
 
 int unos_history_dice(int *x, struct memory history[], int *k,
@@ -137,7 +145,6 @@ void rolling_again (int *x, int dice_sides, int *k) {
   reseting_dice(&dice_sides,x);
   printf("\nDo you want to roll dice again? [Y/N]\n");
   }
-
 }
 
 void rolling_again2 (int *x, int dice_sides, int *k) {
@@ -163,10 +170,17 @@ void error_no_table(int *x, int dice_sides) {
   }
 }
 
-void history_ispis(struct memory history[], int *dice_sides) {
+void history_ispis(struct memory history[], int *dice_sides,int *x) {
+  FILE *fp;
+  fp = fopen("results.dat", "r");
+      if (fp == NULL) {
+         printf("I couldn't open results.dat for reading.\n");
+         exit(0);
+      }
   int j,k;
   for(j = 0; j < 5; j++) {
     for (k = 0; k < *dice_sides; k++ ) {
+      fscanf(fp,"%d",&history[j].dice[k]);
     printf("%d: %d\n", (k+1), history[j].dice[k]);
   }
   printf("\n");
@@ -174,6 +188,7 @@ void history_ispis(struct memory history[], int *dice_sides) {
 }
 
 int main() {
+  FILE *fp;
   int choice;
   int dice_sides = 6, k = 0, l = 0;
   int x[6];
@@ -207,7 +222,7 @@ int main() {
   case 4:
     printf("\nYOU SELECTED OPTION 4\n\n");
     choosing_dice(&dice_sides);
-    history_ispis(history, &dice_sides);
+    history_ispis(history, &dice_sides, x);
     break;
   case 5:
     printf("\nYOU SELECTED OPTION 5\n\n");
