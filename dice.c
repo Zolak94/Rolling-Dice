@@ -118,12 +118,12 @@ int unos_history_dice(int *x, struct memory history[], int *k,
       *k = 4;
       for( i = 0; i < dice_sides; i++){
       history[*k].dice[i] = x[i];
-      fprintf(fp, "%d\n",x[i]);}
+      fprintf(fp, "%d\n",history[*k].dice[i]);}
     }
   else {
     for( i = 0; i < dice_sides; i++){
     history[*k].dice[i] = x[i];
-    fprintf(fp, "%d\n",x[i]);
+    fprintf(fp, "%d\n",history[*k].dice[i]);
       }
     }
     fclose(fp);
