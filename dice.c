@@ -7,7 +7,9 @@
 #define HISTORY_SIZE 5
 
 struct memory {
-  int dice[20];
+  int side;
+  int rolls;
+  float statistics;
 } history[HISTORY_SIZE];
 
 int choosing_dice(int *dice_sides) {
@@ -63,42 +65,39 @@ void printing_table(int dice_sides, int *x) {
   int i;
   for ( i = 0; i < dice_sides; i++ ) {
   printf("%d: %d\n", (i + 1), x[i]);
-
     }
   printf("\n");
   }
 
-int unos_history_dice(int *x, struct memory history[], int *k,
-  int dice_sides) {
-  FILE *fp;
-  fp = fopen("results.dat", "a");
-     if (fp == NULL) {
-       printf("I couldn't open results4.dat for writing.\n");
-       exit(0);
-      }
-  int i = 0;
-    if ( *k > 4){
-      for( i = 0; i < dice_sides; i++){
-        for ( (*k) = 1 ; (*k) < HISTORY_SIZE; (*k)++ ){
-          history[*k-1].dice[i] = history[*k].dice[i];
-          fprintf(fp, "%d\n",history[*k-1].dice[i]);
-        }
-      }
-      i = 0;
-      *k = 4;
-      for( i = 0; i < dice_sides; i++){
-      history[*k].dice[i] = x[i];
-      fprintf(fp, "%d\n",history[*k].dice[i]);}
-    }
-  else {
-    for( i = 0; i < dice_sides; i++){
-    history[*k].dice[i] = x[i];
-    fprintf(fp, "%d\n",history[*k].dice[i]);
-      }
-    }
-    fclose(fp);
-    return *k;
+
+
+int unos_history_dice(int *x, struct memory history[], int *k, int dice_sides,
+   int number_of_dice, int dice_roll) {
+  float statistics = 0;
+  int i;
+  for (i = 0; i < dice_sides; i++) {
+    statistics = statistics + x[i];
   }
+  statistics = statistics / dice_sides;
+  if (*k > 4) {
+    for ((*k) = 1; (*k) < HISTORY_SIZE; (*k)++ ) {
+      history[*k-1].side = history[*k].side;
+      history[*k-1].rolls = history[*k].rolls;
+      history[*k-1].statistics = history[*k].statistics;
+    }
+    i = 0;
+    *k = 4;
+    history[*k].side = dice_sides;
+    history[*k].rolls = (dice_roll * number_of_dice);
+    history[*k].statistics = statistics;
+  }
+  else {
+  history[*k].side = dice_sides;
+  history[*k].rolls = (dice_roll * number_of_dice);
+  history[*k].statistics = statistics;
+  }
+  return *k;
+}
 
 
 void rolling_dice(int *x, int dice_sides, int *k) {
@@ -122,7 +121,7 @@ void rolling_dice(int *x, int dice_sides, int *k) {
       x[random_number-1]++;
       }
     }
-  unos_history_dice(x,history,k,dice_sides);
+  unos_history_dice(x, history, k, dice_sides, number_of_dice, dice_roll);
   (*k)++;
   printing_table(dice_sides, x);
   }
@@ -180,23 +179,17 @@ void error_no_table(int *x, int dice_sides) {
   }
 }
 
-void history_ispis(struct memory history[], int *dice_sides,int *x) {
-  FILE *fp;
-  fp = fopen("results.dat", "r");
-     if (fp == NULL) {
-       printf("I couldn't open results4.dat for writing.\n");
-       exit(0);
-     }
-  int j,k;
-  for(j = 0; j < HISTORY_SIZE; j++) {
-    for (k = 0; k < *dice_sides; k++ ) {
-      fscanf(fp,"%d",&history[j].dice[k]);
 
-    printf("%d: %d\n", (k+1), history[j].dice[k]);
+
+void history_ispis(struct memory history[], int *dice_sides,int *x) {
+  int j;
+  printf("\nHistory:\n\n");
+  for (j = 0; j < HISTORY_SIZE; j++) {
+    printf("Dice sides: %d\n", history[j].side);
+    printf("Number of rolls: %d\n", history[j].rolls);
+    printf("Stastistics: %f\n", history[j].statistics);
   }
   printf("\n");
-}
-fclose(fp);
 }
 
 int main() {
@@ -233,7 +226,6 @@ int main() {
     break;
   case 4:
     printf("\nYou selected option 4\n\n");
-    choosing_dice(&dice_sides);
     history_ispis(history, &dice_sides, x);
     break;
   case 5:
