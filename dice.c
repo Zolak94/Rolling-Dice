@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 struct memory {
   int dice[20];
@@ -17,9 +18,14 @@ int choosing_dice(int *dice_sides) {
   printf("4) 10-sides\n");
   printf("5) 12-sides\n");
   printf("6) 20-sides\n");
+  printf("7) Go to Menu\n");
   scanf("%d", &dice_choice);
-  if (dice_choice > 6 || dice_choice < 1) {
-    printf("\nInvalid choice!\n\n");
+  if (dice_choice > 7 || dice_choice < 1) {
+    printf("\nInvalid choice!\nChoose again\n\n");
+    return choosing_dice(dice_sides);
+  }
+  if (dice_choice == 7) {
+    return main();
   }
   else {
   switch (dice_choice) {
