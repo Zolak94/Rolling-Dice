@@ -4,10 +4,11 @@
 #include <time.h>
 #include <string.h>
 #include <ctype.h>
+#define HISTORY_SIZE 5
 
 struct memory {
   int dice[20];
-} history[5];
+} history[HISTORY_SIZE];
 
 int choosing_dice(int *dice_sides) {
   int dice_choice;
@@ -70,52 +71,15 @@ void printing_table(int dice_sides, int *x) {
 int unos_history_dice(int *x, struct memory history[], int *k,
   int dice_sides) {
   FILE *fp;
-  if ( dice_sides == 4) {
-  fp = fopen("results4.dat", "a");
-      if (fp == NULL) {
-         printf("I couldn't open results4.dat for writing.\n");
-         exit(0);
+  fp = fopen("results.dat", "a");
+     if (fp == NULL) {
+       printf("I couldn't open results4.dat for writing.\n");
+       exit(0);
       }
-    }
-  if ( dice_sides == 6) {
-    fp = fopen("results6.dat", "a");
-        if (fp == NULL) {
-           printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-        }
-      }
-  if ( dice_sides == 8) {
-    fp = fopen("results8.dat", "a");
-        if (fp == NULL) {
-           printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-        }
-      }
-  if ( dice_sides == 10) {
-    fp = fopen("results10.dat", "a");
-       if (fp == NULL) {
-          printf("I couldn't open results4.dat for writing.\n");
-            exit(0);
-          }
-        }
-  if ( dice_sides == 12) {
-    fp = fopen("results12.dat", "a");
-       if (fp == NULL) {
-         printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-          }
-        }
-  if ( dice_sides == 20) {
-    fp = fopen("results20.dat", "a");
-       if (fp == NULL) {
-         printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-          }
-        }
   int i = 0;
     if ( *k > 4){
       for( i = 0; i < dice_sides; i++){
-        for ( (*k) = 1 ; (*k) < 5; (*k)++ ){
+        for ( (*k) = 1 ; (*k) < HISTORY_SIZE; (*k)++ ){
           history[*k-1].dice[i] = history[*k].dice[i];
           fprintf(fp, "%d\n",history[*k-1].dice[i]);
         }
@@ -164,17 +128,17 @@ void rolling_dice(int *x, int dice_sides, int *k) {
   }
 }
 
-int reseting_dice(int *dice_sides, int *x) {
+void reseting_dice(int *dice_sides, int *x) {
   int i;
   for (i = 0; i < *dice_sides; i++) {
     x[i] = 0;
   }
-  return *dice_sides;
 }
 
-int menu(int *choice) {
-  printf("-------Menu-------\n");
-  printf("1) Choose dice\n");
+int menu(int *choice, int *dice_sides) {
+  printf("\n-------Menu-------\n\n");
+  printf("You are using %d-sided dice\n\n", *dice_sides);
+  printf("1) Choose diffrent dice\n");
   printf("2) Roll dice, update new table \n");
   printf("3) Roll dice, update old table\n");
   printf("4) History\n");
@@ -218,52 +182,16 @@ void error_no_table(int *x, int dice_sides) {
 
 void history_ispis(struct memory history[], int *dice_sides,int *x) {
   FILE *fp;
-  if ( *dice_sides == 4) {
-  fp = fopen("results4.dat", "r");
-      if (fp == NULL) {
-         printf("I couldn't open results4.dat for writing.\n");
-         exit(0);
-      }
-    }
-  if ( *dice_sides == 6) {
-    fp = fopen("results6.dat", "r");
-        if (fp == NULL) {
-           printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-        }
-      }
-  if ( *dice_sides == 8) {
-    fp = fopen("results8.dat", "r");
-        if (fp == NULL) {
-           printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-        }
-      }
-  if ( *dice_sides == 10) {
-    fp = fopen("results10.dat", "r");
-       if (fp == NULL) {
-          printf("I couldn't open results4.dat for writing.\n");
-            exit(0);
-          }
-        }
-  if ( *dice_sides == 12) {
-    fp = fopen("results12.dat", "r");
-       if (fp == NULL) {
-         printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-          }
-        }
-  if ( *dice_sides == 20) {
-    fp = fopen("results20.dat", "r");
-       if (fp == NULL) {
-         printf("I couldn't open results4.dat for writing.\n");
-           exit(0);
-          }
-        }
+  fp = fopen("results.dat", "r");
+     if (fp == NULL) {
+       printf("I couldn't open results4.dat for writing.\n");
+       exit(0);
+     }
   int j,k;
-  for(j = 0; j < 5; j++) {
+  for(j = 0; j < HISTORY_SIZE; j++) {
     for (k = 0; k < *dice_sides; k++ ) {
       fscanf(fp,"%d",&history[j].dice[k]);
+
     printf("%d: %d\n", (k+1), history[j].dice[k]);
   }
   printf("\n");
@@ -279,17 +207,17 @@ int main() {
   char unwantedCharacters[40];
   unwantedCharacters[0] = 0;
   time_t t;
-  while (choice != '4') {
-  menu(&choice);
+  while (choice != 5) {
+  menu(&choice, &dice_sides);
   fgets(unwantedCharacters, 40, stdin);
   if (isalpha(unwantedCharacters[0]) == 0)  {
   switch (choice) {
   case 1:
-    printf("\nYOU SELECTED OPTION 1\n");
+    printf("\nYou selected option 1\n\n");
     choosing_dice(&dice_sides);
     break;
   case 2:
-    printf("\nYOU SELECTED OPTION 2\n");
+    printf("\nYou selected option 2\n");
     reseting_dice(&dice_sides, x);
     printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(x, dice_sides, &k);
@@ -297,19 +225,19 @@ int main() {
     rolling_again(x, dice_sides, &k);
     break;
   case 3:
-    printf("\nYOU SELECTED OPTION 3\n");
+    printf("\nYou selected option 3\n");
     error_no_table(x, dice_sides);
     printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(x, dice_sides, &k);
     rolling_again2(x, dice_sides, &k);
     break;
   case 4:
-    printf("\nYOU SELECTED OPTION 4\n\n");
+    printf("\nYou selected option 4\n\n");
     choosing_dice(&dice_sides);
     history_ispis(history, &dice_sides, x);
     break;
   case 5:
-    printf("\nYOU SELECTED OPTION 5\n\n");
+    printf("\nThank you for using our program\n\n");
     return 0;
   default:
     printf("\nWRONG INPUT\n\n");
