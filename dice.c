@@ -9,7 +9,7 @@
 struct memory {
   int side;
   int rolls;
-  float statistics;
+  int statistics[20];
 } history[HISTORY_SIZE];
 
 int choosing_dice(int *dice_sides) {
@@ -69,36 +69,37 @@ void printing_table(int dice_sides, int *x) {
   printf("\n");
   }
 
-
-
 int unos_history_dice(int *x, struct memory history[], int *k, int dice_sides,
    int number_of_dice, int dice_roll) {
-  float statistics = 0;
-  int i;
-  for (i = 0; i < dice_sides; i++) {
-    statistics = statistics + x[i];
-  }
-  statistics = statistics / dice_sides;
+  int statistics[20];
+  int i = 0;
   if (*k > 4) {
     for ((*k) = 1; (*k) < HISTORY_SIZE; (*k)++ ) {
       history[*k-1].side = history[*k].side;
       history[*k-1].rolls = history[*k].rolls;
-      history[*k-1].statistics = history[*k].statistics;
+    }
+    for(i = 0; i < dice_sides; i++) {
+      for ((*k) = 1; (*k) < HISTORY_SIZE; (*k)++ ) {
+      history[*k-1].statistics[i] = history[*k].statistics[i];
+      }
     }
     i = 0;
     *k = 4;
     history[*k].side = dice_sides;
     history[*k].rolls = (dice_roll * number_of_dice);
-    history[*k].statistics = statistics;
+    for(i = 0; i < dice_sides; i++) {
+    history[*k].statistics[i] = x[i];
+    }
   }
   else {
   history[*k].side = dice_sides;
   history[*k].rolls = (dice_roll * number_of_dice);
-  history[*k].statistics = statistics;
+  for(i = 0; i < dice_sides; i++) {
+    history[*k].statistics[i] = x[i];
+    }
   }
   return *k;
 }
-
 
 void rolling_dice(int *x, int dice_sides, int *k) {
   int number_of_dice, dice_roll;
@@ -122,7 +123,6 @@ void rolling_dice(int *x, int dice_sides, int *k) {
       }
     }
   unos_history_dice(x, history, k, dice_sides, number_of_dice, dice_roll);
-  (*k)++;
   printing_table(dice_sides, x);
   }
 }
@@ -135,7 +135,7 @@ void reseting_dice(int *dice_sides, int *x) {
 }
 
 int menu(int *choice, int *dice_sides) {
-  printf("\n-------Menu-------\n\n");
+  printf("\n-----------Menu-----------\n\n");
   printf("You are using %d-sided dice\n\n", *dice_sides);
   printf("1) Choose diffrent dice\n");
   printf("2) Roll dice, update new table \n");
@@ -150,6 +150,7 @@ void rolling_again (int *x, int dice_sides, int *k) {
   char answer;
   printf("\nDo you want to roll dice again ? [Y/N]\n");
   while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
+  (*k)++;
   rolling_dice(x, dice_sides,k);
   reseting_dice(&dice_sides, x);
   printf("\nDo you want to roll dice again? [Y/N]\n");
@@ -179,17 +180,23 @@ void error_no_table(int *x, int dice_sides) {
   }
 }
 
-
-
-void history_ispis(struct memory history[], int *dice_sides,int *x) {
-  int j;
+void history_ispis(struct memory history[], int dice_sides,int *x) {
+  int i, j;
   printf("\nHistory:\n\n");
   for (j = 0; j < HISTORY_SIZE; j++) {
+    if ( history[j].side > 0 ) {
     printf("Dice sides: %d\n", history[j].side);
     printf("Number of rolls: %d\n", history[j].rolls);
-    printf("Stastistics: %f\n", history[j].statistics);
+    for(i = 0; i < dice_sides; i++) {
+    printf("%d: %d\n", (i + 1), history[j].statistics[i]);
+   }
+  }
+  else {
+    printf("History is empty");
   }
   printf("\n");
+ }
+
 }
 
 int main() {
@@ -213,6 +220,9 @@ int main() {
     printf("\nYou selected option 2\n");
     reseting_dice(&dice_sides, x);
     printf("\nYou are rolling %d sided dice\n", dice_sides);
+    if (k != 0) {
+      k++;
+    }
     rolling_dice(x, dice_sides, &k);
     reseting_dice(&dice_sides, x);
     rolling_again(x, dice_sides, &k);
@@ -226,18 +236,18 @@ int main() {
     break;
   case 4:
     printf("\nYou selected option 4\n\n");
-    history_ispis(history, &dice_sides, x);
+    history_ispis(history, dice_sides, x);
     break;
   case 5:
     printf("\nThank you for using our program\n\n");
     return 0;
   default:
-    printf("\nWRONG INPUT\n\n");
-    return 0;
+    printf("\nError wrong input!\nPlease try again\n");
+    return main();
      }
    }
   else {
-    printf("\nERROR WRONG INPUT!\n\n");
+    printf("\nError wrong input!\nPlease try again\n");
   }
  }
 }
