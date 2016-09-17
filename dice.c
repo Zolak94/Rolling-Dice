@@ -123,7 +123,7 @@ void rolling_dice(int *x, int dice_sides, int *k) {
       }
     }
   unos_history_dice(x, history, k, dice_sides, number_of_dice, dice_roll);
-
+  (*k)++;
   printing_table(dice_sides, x);
   }
 }
@@ -152,7 +152,6 @@ void rolling_again (int *x, int dice_sides, int *k) {
   printf("\nDo you want to roll dice again ? [Y/N]\n");
   while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
   reseting_dice(&dice_sides, x);
-  (*k)++;
   rolling_dice(x, dice_sides,k);
   reseting_dice(&dice_sides, x);
   printf("\nDo you want to roll dice again? [Y/N]\n");
@@ -170,9 +169,6 @@ void rolling_again2 (int *x, int dice_sides, int *k) {
 
 void error_no_table(int *x, int dice_sides, int *k) {
   int i;
-  if ( (*k) != 0) {
-  (*k)++;
-  }
   for(i = 0; i < dice_sides; i++) {
     if (x[i] > 20) {
       printf("\nError: No table to update!\n");
@@ -227,15 +223,18 @@ int main() {
     printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(x, dice_sides, &k);
     rolling_again(x, dice_sides, &k);
+    printf("%d",k);
     break;
   case 3:
   printf("%d",k);
     printf("\nYou selected option 3\n");
+    printf("%d",k);
     error_no_table(x, dice_sides, &k);
+    printf("%d",k);
     printf("\nYou are rolling %d sided dice\n", dice_sides);
     rolling_dice(x, dice_sides, &k);
     rolling_again2(x, dice_sides, &k);
-    k++;
+    printf("%d",k);
     break;
   case 4:
     printf("\nYou selected option 4\n\n");
