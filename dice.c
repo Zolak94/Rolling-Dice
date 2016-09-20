@@ -125,7 +125,6 @@ void rolling_dice(int *x, int dice_sides) {
       }
     }
   unos_history_dice(x, history, dice_sides, number_of_dice, dice_roll);
-  position++;
   printing_table(dice_sides, x);
   }
 }
@@ -154,10 +153,12 @@ void rolling_again (int *x, int dice_sides) {
   printf("\nDo you want to roll dice again ? [Y/N]\n");
   while (scanf(" %c", &answer) == 1 && answer == 'Y' || answer == 'y') {
   reseting_dice(&dice_sides, x);
+  position++;
   rolling_dice(x, dice_sides);
   reseting_dice(&dice_sides, x);
   printf("\nDo you want to roll dice again? [Y/N]\n");
   }
+  position++;
 }
 
 void rolling_again2 (int *x, int dice_sides) {
@@ -217,6 +218,9 @@ int main() {
   case 1:
     printf("\nYou selected option 1\n\n");
     choosing_dice(&dice_sides);
+    if ( position > 0) {
+      position++;
+    }
     break;
   case 2:
     printf("\nYou selected option 2\n");
